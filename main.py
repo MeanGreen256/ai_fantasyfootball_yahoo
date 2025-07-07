@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # TODO: Replace with your actual League ID
 # You can find your league ID in the URL of your league's homepage.
 # e.g., https://football.fantasysports.yahoo.com/f1/123456 -> LEAGUE_ID = '123456'
+# key 7pgr68k
 LEAGUE_ID = "177009"
 GAME_CODE = "nfl"  # 'nfl' for football
 
@@ -21,7 +22,10 @@ def authenticate():
     """
     try:
         # The credential file is in the parent directory of /src
-        cred_path = Path(__file__).parent.parent / 'private.json'
+        cred_path = Path(__file__).parent.parent / 'ai_fantasyfootball_yahoo' / 'private.json'
+        if not cred_path.exists():
+            print (f"Credential file not found at {cred_path}. Please create 'private.json' with your Yahoo App's consumer_key and consumer_secret.")
+            raise FileNotFoundError(f"Credential file not found at {cred_path}")
         sc = OAuth2(None, None, from_file=cred_path)
         if not sc.token_is_valid():
             logging.info("Authentication token is not valid or expired. Re-authenticating...")
