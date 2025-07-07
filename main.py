@@ -1,4 +1,5 @@
 import yahoo_fantasy_api as yfa
+from yahoo_oauth import OAuth2
 import logging
 from pathlib import Path
 
@@ -21,10 +22,11 @@ def authenticate():
     try:
         # The credential file is in the parent directory of /src
         cred_path = Path(__file__).parent.parent / 'private.json'
-        sc = yfa.oauth2.Yahoo(from_file=cred_path)
+        sc = OAuth2(None, None, from_file=cred_path)
         if not sc.token_is_valid():
             logging.info("Authentication token is not valid or expired. Re-authenticating...")
-            sc.login()
+            #sc.login()
+            
         logging.info("Authentication successful.")
         return sc
     except FileNotFoundError:
