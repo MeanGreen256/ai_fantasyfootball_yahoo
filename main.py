@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # You can find your league ID in the URL of your league's homepage.
 # e.g., https://football.fantasysports.yahoo.com/f1/123456 -> LEAGUE_ID = '123456'
 # key 7pgr68k
-LEAGUE_ID = "177009"
+LEAGUE_ID = "160889"
 GAME_CODE = "nfl"  # 'nfl' for football
 
 
@@ -29,7 +29,7 @@ def authenticate():
         sc = OAuth2(None, None, from_file=cred_path)
         if not sc.token_is_valid():
             logging.info("Authentication token is not valid or expired. Re-authenticating...")
-            #sc.login()
+            sc.login()
             
         logging.info("Authentication successful.")
         return sc
