@@ -2,6 +2,7 @@ import yahoo_fantasy_api as yfa
 from yahoo_oauth import OAuth2
 import logging
 from pathlib import Path
+import pandas as pd
 
 # Set up basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -95,6 +96,51 @@ def display_scoreboard_for_week(league, week):
     except Exception as e:
         logging.error(f"Could not fetch or display scoreboard for week {week}. Error: {e}")
 
+def save_report_to_html(league, filename="fantasy_report.html"):
+    """Saves standings and scoreboard to a single HTML file."""
+    try:
+        output_path = Path(__file__).parent.parent / filename
+        logging.info(f"Generating HTML report at {output_path}...")
+
+        # Get standings and convert to HTML table
+        standings_df = pd.DataFrame(league.standings())
+        standings_html = standings_df.to_html(index=False, border=0, classes="table table-striped")
+
+        # Get scoreboard and format as HTML
+        week = league.current_week()
+        sb = league.scoreboard(week=week)
+        scoreboard_html = f"<h2>Scoreboard for Week {week}</h2><ul>"
+        for match in sb['matchups']:
+            team1 = match['teams'][0]
+            team2 = match['teams'][1]
+            scoreboard_html += f"<li>{team1['name']} ({team1['points']:.2f}) vs. {team2['name']} ({team2['points']:.2f})</li>"
+        scoreboard_html += "</ul>"
+
+        # Basic HTML structure with some style
+        html_template = f"""
+        <html>
+        <head>
+            <title>{league.settings()['name']} Report</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <style> body {{ padding: 2em; }} </style>
+        </head>
+        <body>
+            <h1>{league.settings()['name']}</h1>
+            <h2>Current Standings</h2>
+            {standings_html}
+            <hr>
+            {scoreboard_html}
+        </body>
+        </html>
+        """
+
+        with open(output_path, "w") as f:
+            f.write(html_template)
+        logging.info(f"Successfully saved HTML report to {output_path}")
+
+    except Exception as e:
+        logging.error(f"Could not generate HTML report. Error: {e}")
+
 
 def main():
     """
@@ -116,6 +162,8 @@ def main():
 
     display_standings(league)
     display_scoreboard_for_week(league, league.current_week())
+    ##TODO: testing html file generation
+    save_report_to_html(league)
 
 
 if __name__ == "__main__":
