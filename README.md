@@ -47,3 +47,20 @@ A Python application to pull and analyze fantasy football stats from your Yahoo 
     ```
     *   The first time you run the script, a browser window will open asking you to log in to Yahoo and authorize the application.
     *   After authorization, a `yahoo_token.json` file will be created in the root directory to store your session token for future runs.
+
+## Usage for new flask implementation
+1. **Open your terminal and navigate to the src directory:**
+    * cd /Users/chasestuart/Documents/code_projects/ai_fantasyfootball_yahoo/src
+
+2. **Tell flask where to run your app**
+    * # For macOS/Linux
+    export FLASK_APP=app.py
+    flask run
+    # For Windows (Command Prompt)
+    # set FLASK_APP=app.py
+    # flask run
+
+3. **Open Browser**
+    * and go to the URL shown in the terminal, which is usually http://127.0.0.1:5000.
+
+You should now see a webpage displaying your league's standings and the current week's scoreboard! Any user on your local network can also access this page by navigating to your computer's local IP address followed by :5000.
