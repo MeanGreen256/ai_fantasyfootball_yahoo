@@ -51,7 +51,7 @@
                     </tbody>
                 </table>
                 {% else %}
-                <p>Could not load standings.</p>
+                <p class="text-muted">Standings data is currently unavailable. This may be due to a temporary issue with the Yahoo API.</p>
                 {% endif %}
             </div>
         </div>
@@ -59,7 +59,7 @@
         <!-- Scoreboard Card -->
         <div class="card">
             <div class="card-header">
-                <h2>Scoreboard - Week {{ week }}</h2>
+                <h2>Scoreboard - Week {{ week or 'N/A' }}</h2>
             </div>
             <ul class="list-group list-group-flush">
                 {% if scoreboard and scoreboard.matchups %}
@@ -79,7 +79,9 @@
                     </li>
                     {% endfor %}
                 {% else %}
-                    <li class="list-group-item">Could not load scoreboard.</li>
+                    <li class="list-group-item">
+                        <p class="text-muted mb-0">Scoreboard data is currently unavailable for this week.</p>
+                    </li>
                 {% endif %}
             </ul>
         </div>
